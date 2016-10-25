@@ -1,7 +1,7 @@
 import React from 'react';
 
-const TodoFilterLink = ({onFilterClick, children, active}) => {
-    if (active) {
+const TodoFilterLink = ({setVisibilityFilter, children, visibilityFilter, filter}) => {
+    if (visibilityFilter == filter) {
         return <span>{children}</span>
     }
     
@@ -9,7 +9,7 @@ const TodoFilterLink = ({onFilterClick, children, active}) => {
         <a href="#"
            onClick={(e) => {
                 e.preventDefault();
-                onFilterClick;
+                setVisibilityFilter(filter);
            }}
         >
             {children}

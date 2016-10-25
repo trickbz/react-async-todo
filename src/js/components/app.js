@@ -1,7 +1,6 @@
 import React from 'react';
 import AddTodo from './add-todo';
 import TodoList from './todo-list';
-import NewTodoPreview from './new-todo-preview';
 import TodoFooter from './todo-footer';
 import todosRepository from '../db/index';
 
@@ -12,9 +11,12 @@ class App extends React.Component {
         this.onAddTodo = this.onAddTodo.bind(this);
         this.onDeleteTodo = this.onDeleteTodo.bind(this);
         this.completeTodo = this.completeTodo.bind(this);
+        this.setVisibilityFilter = this.setVisibilityFilter.bind(this);
+        this.getFilteredTodos = this.getFilteredTodos.bind(this);
         this.state = {
             newTodoTitle: '',
-            todos: todosRepository.getAll()
+            todos: todosRepository.getAll(),
+            visibilityFilter: 'SHOW_ALL'
         }
     }
 
@@ -51,21 +53,40 @@ class App extends React.Component {
         }
     }
 
+    setVisibilityFilter(filter) {
+        this.setState({
+            visibilityFilter: filter
+        })
+    }
+
+    getFilteredTodos(filter) {
+        switch (filter) {
+            case 'SHOW_COMPLETED':
+                return todosRepository.getAll().filter(todo => todo.completed);
+            case 'SHOW_ACTIVE':
+                return todosRepository.getAll().filter(todo => !todo.completed);
+            default:
+                return todosRepository.getAll();
+        }
+    }
+
     render() {
         return (
             <div>
                 <AddTodo
                     onNewTodoChange={this.onNewTodoChange}
-                    addTodoButtonText="Add Fucking Todo"
+                    addTodoButtonText="Add Todo"
                     onAddTodo={this.onAddTodo}
                 />
                 <TodoList
-                    todos={this.state.todos}
+                    todos={this.getFilteredTodos(this.state.visibilityFilter)}
                     onDeleteTodo={this.onDeleteTodo}
                     completeTodo={this.completeTodo}
                 />
-                <NewTodoPreview text={this.state.newTodoTitle}/>
-                <TodoFooter />
+                <TodoFooter
+                    setVisibilityFilter={this.setVisibilityFilter}
+                    visibilityFilter={this.state.visibilityFilter}
+                />
             </div>
         );
     }
