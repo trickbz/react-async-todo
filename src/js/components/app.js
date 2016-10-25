@@ -3,6 +3,7 @@ import AddTodo from './add-todo';
 import TodoList from './todo-list';
 import TodoFooter from './todo-footer';
 import todosRepository from '../db/index';
+import {VisibilityFilters} from '../constants';
 
 class App extends React.Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class App extends React.Component {
         this.state = {
             newTodoTitle: '',
             todos: todosRepository.getAll(),
-            visibilityFilter: 'SHOW_ALL'
+            visibilityFilter: VisibilityFilters.SHOW_ALL
         }
     }
 
@@ -61,9 +62,9 @@ class App extends React.Component {
 
     getFilteredTodos(filter) {
         switch (filter) {
-            case 'SHOW_COMPLETED':
+            case VisibilityFilters.SHOW_COMPLETED:
                 return todosRepository.getAll().filter(todo => todo.completed);
-            case 'SHOW_ACTIVE':
+            case VisibilityFilters.SHOW_ACTIVE:
                 return todosRepository.getAll().filter(todo => !todo.completed);
             default:
                 return todosRepository.getAll();
