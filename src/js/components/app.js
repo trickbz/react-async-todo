@@ -2,6 +2,7 @@ import React from 'react';
 import AddTodo from './add-todo';
 import TodoList from './todo-list';
 import NewTodoPreview from './new-todo-preview';
+import TodoFooter from './todo-footer';
 import todosRepository from '../db/index';
 
 class App extends React.Component {
@@ -63,9 +64,10 @@ class App extends React.Component {
                     onDeleteTodo={this.onDeleteTodo}
                     completeTodo={this.completeTodo}
                 />
-                <NewTodoPreview text={this.state.newTodoTitle} />
+                <NewTodoPreview text={this.state.newTodoTitle}/>
+                <TodoFooter />
             </div>
-        )
+        );
     }
 }
 
